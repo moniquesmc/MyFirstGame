@@ -1,0 +1,195 @@
+SetErrorMode(2)
+
+SetWindowTitle( "Princess Game" )
+
+SetVirtualResolution( 1193, 930)
+
+//tela de fundo
+CreateSprite(LoadImage("castelo.jpg")) 
+
+
+
+//Bloco das variáveis
+
+posX as integer = 600
+posY as integer = 600
+
+//Colocando e tocando música de fundo
+LoadMusic(1,"Jungle.wav")
+PlayMusic(1,1)
+
+//CreateSprite(LoadImage(""))
+
+imag1 = LoadImage("flor.png")
+imag2 = LoadImage("EggBlue.png")
+imag3 = LoadImage("apple1.png")
+imag4 = LoadImage("rainha.png")
+imag5 = LoadImage("EggRed.png")
+
+//Criando Sprite e colocando-as em variaveis 
+flor = CreateSprite(imag1)
+bola = CreateSprite(imag2)
+maca = CreateSprite(imag3)
+macaco = CreateSprite(imag4)
+bola1 = CreateSprite(imag5)
+
+//Definindo tamanho das sprites
+SetSpriteSize(flor, 90, 90)
+SetSpriteSize(bola, 44, 44)
+SetSpriteSize(macaco, 280, 280)
+SetSpriteSize(maca,44,44)
+SetSpriteSize(bola1,44,44)
+
+
+//Definindo uma posição inicial fixa
+//SetSpritePosition(macaco, 300, 330)
+
+
+//Definindo tipo de colisão caixa
+SetSpriteShape(flor, 2)
+SetSpriteShape(macaco, 2)
+SetSpriteShape(bola, 2)
+SetSpriteShape(maca, 2)
+SetSpriteShape(bola1, 2)
+
+//Variaveis usaveis
+Pontos = 0
+
+do
+	//Usando pontuação
+    PrintC("Pontos: ")
+    PrintC(Pontos)
+    
+    
+	SetSpritePosition(macaco, posX, posY)
+	// Move Sprite to Right
+	if GetRawKeyState( 39 )  
+	//PlaySprite ( 2, 3, 1, 5, 8)
+    posX = posX + 5
+    //SetSpriteFlip( 5, 0, 0)
+
+
+	// Move Sprite to Left
+	elseif GetRawKeyState ( 37 )
+	//PlaySprite ( 2, 4, 1, 5, 8)
+    posX = posX - 5
+    //SetSpriteFlip( 5, 180, 0)
+	endif
+    
+
+    
+    //Definir as definições da maça
+    //------------------------------------------
+    SetSpritePosition(maca,Tvariavel,GetSpriteY(maca) + 4.5)
+    
+    If GetSpriteCollision(macaco,maca) = 1
+		Tvariavel = 0
+		SetSpritePosition(maca,Tvariavel,0)
+		Tvariavel = Random(0,700) //a melhor forma encontrada foi criar uma variavel que recebia um valor random
+		Pontos = Pontos + 5
+	endif
+	
+	If GetSpriteY(maca) > 930
+		SetSpritePosition(maca,Tvariavel,0)
+		Tvariavel = Random(0,700)
+	Endif		
+    
+    
+    //Definir as definições da flor
+    //-----------------------------------------------------
+    SetSpritePosition(flor, Xvariavel , GetSpriteY(flor)+ 4.5)
+   
+	
+	//Colisão da flor com o macaco
+	If GetSpriteCollision(macaco, flor) = 1
+		Xvariavel = 0
+		SetSpritePosition(flor, Xvariavel, 0)
+		Xvariavel = Random(0,700)
+		Pontos = Pontos + 5
+	Endif
+	
+	//Caso não pegue a flor
+	If GetSpriteY(flor) > 930
+		SetSpritePosition(flor, Xvariavel, 0)
+		Xvariavel = Random(0,700)
+		
+	Endif
+
+	//Definir as definições da bola
+	//--------------------------------------------------------
+	
+	SetSpritePosition(bola, Zvariavel , GetSpriteY(bola)+4.5)
+    
+    
+	//Colisão da bola com macaco
+	If GetSpriteCollision(macaco, bola) = 1
+		Zvariavel = 0
+		SetSpritePosition(bola, Zvariavel, 0)
+		Zvariavel = Random(0,700)
+		Pontos = Pontos - 5
+	Endif
+	
+	//Caso não pegue a bola
+	If GetSpriteY(bola) > 930
+		SetSpritePosition(bola, Zvariavel, 0)
+		Zvariavel = Random(0,700)
+		
+	Endif
+	
+	//Definir as definições da bola1
+	//--------------------------------------------------------
+	
+	SetSpritePosition(bola1, Gvariavel , GetSpriteY(bola1)+4.5)
+    
+    
+	//Colisão da bola com macaco
+	If GetSpriteCollision(macaco, bola1) = 1
+		Gvariavel = 0
+		SetSpritePosition(bola1, Gvariavel, 0)
+		Gvariavel = Random(0,700)
+		Pontos = Pontos - 5
+	Endif
+	
+	//Caso não pegue a bola
+	If GetSpriteY(bola1) > 930
+		SetSpritePosition(bola1, Gvariavel, 0)
+		Gvariavel = Random(0,700)
+		
+	Endif
+		
+		//Caso o tempo passe de 60 segundos 
+		//Coloca todas as sprites em uma posição fixa
+		If (Timer () > 60 and pontos < 0)
+			SetSpritePosition(flor, 200, 0)
+			SetSpritePosition(maca, 50 ,0)
+			SetSpritePosition(bola, 400, 0)
+			SetSpritePosition(bola1, 600, 0)
+			SetSpritePosition(macaco, 300, 330)
+			StopMusic()
+			
+			//Criando uma string para aparecer na tela do jogo
+            texto = CreateText("Fim de jogo")
+			SetTextSize(texto,50)
+			SetTextPosition(texto,596,465)
+			SetTextColor(texto,255,0,255,0)
+		Endif	
+			
+		If (Timer () > 60 and pontos > 10)
+			SetSpritePosition(flor, 200, 0)
+			SetSpritePosition(maca, 50 ,0)
+			SetSpritePosition(bola, 400, 0)
+			SetSpritePosition(bola1, 600, 0)
+			SetSpritePosition(macaco, 300, 330)
+			StopMusic()
+			
+			//Criando uma string para aparecer na tela do jogo
+            texto = CreateText("Fim de jogo")
+			SetTextSize(texto,50)
+			SetTextPosition(texto,596,465)
+			SetTextColor(texto,255,0,255,0)
+			
+            
+		Endif	
+			
+    Sync()
+loop
